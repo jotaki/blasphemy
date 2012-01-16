@@ -5,27 +5,27 @@
 ##
 # Safely add path to PATH environment variable
 add_path() {
-  [[ -d "${1:-/dev/null}" ]] && export PATH=${PATH:+$PATH:}$1;
+    [[ -d "${1:-/dev/null}" ]] && export PATH=${PATH:+$PATH:}$1;
 }
 
 ##
 # Safely include files.
 require() {
-  [[ -f "${1:-/dev/null}" ]] && source "$1";
+    [[ -f "${1:-/dev/null}" ]] && source "$1";
 }
 
 ##
 # destroy history file.
 nuke_history() {
-  cat /dev/null > $HISTFILE
-  echo "$(date +%s).$$ ($(id -nu))" >> $HISTFILE.nuked
-  export HISTFILE=/dev/null
+    cat /dev/null > $HISTFILE
+    echo "$(date +%s).$$ ($(id -nu))" >> $HISTFILE.nuked
+    export HISTFILE=/dev/null
 }
 
 ##
 # returns true if terminal supports color.
 terminal_supports_color() {
-  [[ -x /usr/bin/tput ]] && tput setaf 1 >&/dev/null;
+    [[ -x /usr/bin/tput ]] && tput setaf 1 >&/dev/null;
 }
 
 ##
@@ -55,14 +55,13 @@ export EDITOR=/usr/bin/vim
 ##
 # customize prompt
 if [[ terminal_supports_color ]]; then
-  workdir="\[\033[01;34m\]\w\[\033[00m\]"
-  hostnm="[\[\033[01;32m\]\h\[\033[00m\]]"
-  prompt="\[\033[01;34m\]$\[\033[00m\] "
-  prompt="$workdir$hostnm$prompt"
-  export PS1=$prompt
-  unset workdir hostnm prompt
+    workdir="\[\033[01;34m\]\w\[\033[00m\]"
+    hostnm="[\[\033[01;32m\]\h\[\033[00m\]]"
+    prompt="\[\033[01;34m\]$\[\033[00m\] "
+    export PS1="$workdir$hostnm$prompt"
+    unset workdir hostnm prompt
 else
-  export PS1="\w [\h]$ "
+    export PS1="\w [\h]$ "
 fi
 
 ##
@@ -93,3 +92,11 @@ add_path "$HOME/bin"
 ##
 # Source RVM if necessery.
 require "$HOME/.rvm/scripts/rvm"
+
+##
+# source some additional bashrc files.
+if [ -d "$HOME/.profile.d/" ]; then
+    for srcfile in $HOME/.profile.d/*; do
+        require "$srcfile"
+    done
+fi
