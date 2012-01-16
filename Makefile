@@ -10,5 +10,5 @@ home:
 	mkdir -p $(HOME)/bin $(HOME)/.profile.d/
 
 pcalc:
-	[[ -x "${FLEX:-/dev/null}" ]] || (echo "Flex not installed" && exit 1)	
+	@[[ -x "${FLEX:-/dev/null}" ]] || (echo "Flex not installed" && exit 1)	
 	make -C src/pcalc-2 all local-install distclean
