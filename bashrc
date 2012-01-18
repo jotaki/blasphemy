@@ -5,7 +5,17 @@
 ##
 # Safely add path to PATH environment variable
 add_path() {
-    [[ -d "${1:-/dev/null}" ]] && export PATH=${PATH:+$PATH:}$1;
+    if [[ -d "${1:-/dev/null}" ]]; then
+        if [[ "${2:-last}" = "first" ]]; then
+            PATH="${1}${PATH:+:$PATH}"
+        else
+            PATH="${PATH:+$PATH:}${1}"
+        fi
+        export PATH
+        return 0
+    fi
+
+    return 1
 }
 
 ##
