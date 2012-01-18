@@ -116,7 +116,7 @@ alias killhistory=nuke_history
 
 ##
 # Add ~/bin to executable path
-add_path "$HOME/bin"
+add_path "$HOME/bin" first
 
 ##
 # Source RVM if necessery.
