@@ -9,6 +9,13 @@ add_path() {
 }
 
 ##
+# Return true if user is root
+is_root() {
+    [[ 0 -eq $(id -u) ]] && return 0
+    return 1
+}
+
+##
 # Safely include files.
 require() {
     [[ -f "${1:-/dev/null}" ]] && source "$1";
@@ -55,13 +62,25 @@ export EDITOR=/usr/bin/vim
 ##
 # customize prompt
 if [[ terminal_supports_color ]]; then
-    workdir="\[\033[01;34m\]\w\[\033[00m\]"
-    hostnm="[\[\033[01;32m\]\h\[\033[00m\]]"
-    prompt="\[\033[01;34m\]$\[\033[00m\] "
+    dclr="34m"; hclr="32m"; pclr="34m"; ps1="$"
+    if is_root; then
+        dclr="36m"
+        hclr="31;9m"
+        pclr="31m"
+        ps1='#'
+    fi
+
+    workdir="\[\033[01;$dclr\]\w\[\033[00m\]"
+    hostnm="[\[\033[01;$hclr\]\h\[\033[00m\]]"
+    prompt="\[\033[01;$pclr\]$ps1\[\033[00m\] "
     export PS1="$workdir$hostnm$prompt"
-    unset workdir hostnm prompt
+    unset workdir hostnm prompt dclr hclr pclr ps1
 else
-    export PS1="\w [\h]$ "
+    if is_root; then
+        export PS1="\w [\h]# "
+    else
+        export PS1="\w [\h]$ "
+    fi
 fi
 
 ##
