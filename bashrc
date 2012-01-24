@@ -29,32 +29,43 @@ terminal_supports_color() {
 }
 
 ##
-# Toggles output profiles 
-toggle_ao() {
-    local current_profile=$(pacmd list-cards | grep 'active profile' |
-        tr '[<>]' '~' | cut -f2 -d'~')
+# grep with less (color support) use with care.
+lgrep() {
+    local clr=always
 
-    if [ "${current_profile:-}" = "output:analog-surround-40" ]; then
-        echo "Switching audio to HDMI."
-        pacmd set-card-profile 0 output:hdmi-stereo >& /dev/null
-    else
-        echo "Switching audio to internal speakers."
-        pacmd set-card-profile 0 output:analog-surround-40 >& /dev/null
-    fi
+    terminal_supports_color || clr=auto
+    \grep --color=$clr $@ | \less -R
 }
+
+##
+# find editor
+find_editor() {
+    local editor=
+
+    while [[ 0 < ${#@} ]]; do
+        editor=$(which $1)
+        [[ -z "$editor" ]] || break
+        shift;
+    done
+
+    [[ -z "$editor" ]] &&
+        echo -n echo No available editor: ||
+        echo -n $editor
+}
+
 
 ##
 # Ignore space and duplicates. Store only a single instance of a given command.
 export HISTCONTROL=ignoreboth:erasedups
 
 ##
-# I prefer vim.
-export VISUAL=/usr/bin/vim
-export EDITOR=/usr/bin/vim
+# Preferred editor.
+export EDITOR=$(find_editor vim vi ed)
+export VISUAL="$EDITOR"
 
 ##
 # customize prompt
-if [[ terminal_supports_color ]]; then
+if terminal_supports_color; then
     workdir="\[\033[01;34m\]\w\[\033[00m\]"
     hostnm="[\[\033[01;32m\]\h\[\033[00m\]]"
     prompt="\[\033[01;34m\]$\[\033[00m\] "
@@ -84,6 +95,18 @@ alias installrvm='bash < <(curl -s https://rvm.beginrescueend.com/install/rvm)'
 ##
 # Nuke history
 alias killhistory=nuke_history
+
+##
+# info to behave like vi
+alias info="info --vi-keys"
+
+##
+# control characters for less
+alias cless='less -r'
+
+##
+# allow colors with less
+alias less='less -R'
 
 ##
 # Add ~/bin to executable path
