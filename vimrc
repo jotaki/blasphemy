@@ -13,3 +13,4 @@ let html_use_css=1
 let html_number_lines=1
 let html_no_pre=1
 
+iab INDOC #####<CR># NAME:<CR>#<CR># SYNOPSIS:<CR>#<CR># DESCRIPTION:<CR>#<CR># RETURN VALUE:<CR>#

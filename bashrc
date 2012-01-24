@@ -5,7 +5,24 @@
 ##
 # Safely add path to PATH environment variable
 add_path() {
-    [[ -d "${1:-/dev/null}" ]] && export PATH=${PATH:+$PATH:}$1;
+    if [[ -d "${1:-/dev/null}" ]]; then
+        if [[ "${2:-last}" = "first" ]]; then
+            PATH="${1}${PATH:+:$PATH}"
+        else
+            PATH="${PATH:+$PATH:}${1}"
+        fi
+        export PATH
+        return 0
+    fi
+
+    return 1
+}
+
+##
+# Return true if user is root
+is_root() {
+    [[ 0 -eq $(id -u) ]] && return 0
+    return 1
 }
 
 ##
@@ -66,13 +83,25 @@ export VISUAL="$EDITOR"
 ##
 # customize prompt
 if terminal_supports_color; then
-    workdir="\[\033[01;34m\]\w\[\033[00m\]"
-    hostnm="[\[\033[01;32m\]\h\[\033[00m\]]"
-    prompt="\[\033[01;34m\]$\[\033[00m\] "
+    dclr="34m"; hclr="32m"; pclr="34m"; ps1="$"
+    if is_root; then
+        dclr="36m"
+        hclr="31;9m"
+        pclr="31m"
+        ps1='#'
+    fi
+
+    workdir="\[\033[01;$dclr\]\w\[\033[00m\]"
+    hostnm="[\[\033[01;$hclr\]\h\[\033[00m\]]"
+    prompt="\[\033[01;$pclr\]$ps1\[\033[00m\] "
     export PS1="$workdir$hostnm$prompt"
-    unset workdir hostnm prompt
+    unset workdir hostnm prompt dclr hclr pclr ps1
 else
-    export PS1="\w [\h]$ "
+    if is_root; then
+        export PS1="\w [\h]# "
+    else
+        export PS1="\w [\h]$ "
+    fi
 fi
 
 ##
@@ -110,7 +139,7 @@ alias less='less -R'
 
 ##
 # Add ~/bin to executable path
-add_path "$HOME/bin"
+add_path "$HOME/bin" first
 
 ##
 # Source RVM if necessery.
