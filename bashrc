@@ -97,11 +97,7 @@ if terminal_supports_color; then
     export PS1="$workdir$hostnm$prompt"
     unset workdir hostnm prompt dclr hclr pclr ps1
 else
-    if is_root; then
-        export PS1="\w [\h]# "
-    else
-        export PS1="\w [\h]$ "
-    fi
+    export PS1="\w [\h]\\$ "
 fi
 
 ##
