@@ -142,6 +142,10 @@ add_path "$HOME/bin" first
 require "$HOME/.rvm/scripts/rvm"
 
 ##
+# Add RVM binaries to PATH.
+add_path "$HOME/.rvm/bin"
+
+##
 # source some additional bashrc files.
 if [ -d "$HOME/.profile.d/" ]; then
     for srcfile in $HOME/.profile.d/*; do
