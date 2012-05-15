@@ -1,3 +1,10 @@
+/*
+ * Usage:
+ *   #include "jkdbg/memory.h"
+ *
+ * define ENAB_DEBUG during compilation, eg:
+ *   gcc -W -Wall -g -O2 -DENAB_DEBUG -std=c89 -o foo foo.c
+ */
 #ifndef JKDBG_MEMORY_H
 # define JKDBG_MEMORY_H
 
@@ -16,22 +23,26 @@ void *(*real_calloc)() = calloc;
 void *(*real_realloc)() = realloc;
 void (*real_free)() = free;
 
-#  define JK_MLOG_FMT "[%c] [%11x] %16s:%lu %8s(%12s) = %p,%ld\n"
+void *jk_dbg_malloc();
+void *jk_dbg_calloc();
+void *jk_dbg_realloc();
+void jk_dbg_free();
 
+#  define JK_MLOG_FMT "[%c] [%9lx] %18s:%4lx. %8s(%8s) = %p,%lu\n"
 
 #  define malloc(size) \
-	jk_dbg_malloc(__FILE__, __LINE__, ##size, (size))
+	jk_dbg_malloc(__FILE__, __LINE__, #size, (size))
 
 #  define calloc(nmemb, size) \
-	jk_dbg_calloc(__FILE__, __LINE__, ##nmemb "," ##size, (nmemb), (size))
+	jk_dbg_calloc(__FILE__, __LINE__, #nmemb "," #size, (nmemb), (size))
 
 #  define realloc(ptr, size) \
-	jk_dbg_realloc(__FILE__, __LINE__, ##ptr "," ##size, (ptr), (size))
+	jk_dbg_realloc(__FILE__, __LINE__, #ptr "," #size, (ptr), (size))
 
 #  define free(ptr) \
-	jk_dbg_free(__FILE__, __LINE__, ##ptr, (void*)(ptr))
+	jk_dbg_free(__FILE__, __LINE__, #ptr, (void*)(ptr))
 
-inline void *jk_dbg_malloc(filename, linenumber, variable, size)
+void *jk_dbg_malloc(filename, linenumber, variable, size)
 	const char *filename, *variable;
 	unsigned long linenumber;
 	size_t size;
@@ -47,7 +58,7 @@ inline void *jk_dbg_malloc(filename, linenumber, variable, size)
 	return ptr;
 }
 
-inline void *jk_dbg_calloc(filename, linenumber, variables, nmemb, size)
+void *jk_dbg_calloc(filename, linenumber, variables, nmemb, size)
 	const char *filename, *variables;
 	unsigned long linenumber;
 	size_t nmemb, size;
@@ -63,11 +74,11 @@ inline void *jk_dbg_calloc(filename, linenumber, variables, nmemb, size)
 	return ptr;
 }
 
-inline void *jk_dbg_calloc(filename, linenumber, variables, ptr, size)
+void *jk_dbg_realloc(filename, linenumber, variables, ptr, size)
 	const char *filename, *variables;
 	unsigned long linenumber;
 	void *ptr;
-	size_t size
+	size_t size;
 {
 	time_t stamp = 0;
 	void *new_ptr;
@@ -77,14 +88,14 @@ inline void *jk_dbg_calloc(filename, linenumber, variables, ptr, size)
 	fprintf(stderr, JK_MLOG_FMT, 'A', stamp, filename, linenumber,
 		"realloc", variables, new_ptr, size);
 
-	if((unsigned long)new_ptr != (unsigned long)ptr)
+	if(new_ptr && (unsigned long)new_ptr != (unsigned long)ptr)
 		fprintf(stderr, JK_MLOG_FMT, 'F', stamp, filename, linenumber,
-			"free", "---", ptr, 0L);
+			"free", "---", ptr, 0UL);
 
 	return new_ptr;
 }
 
-inline void jk_dbg_free(filename, linenumber, variable, ptr)
+void jk_dbg_free(filename, linenumber, variable, ptr)
 	const char *filename, *variable;
 	unsigned long linenumber;
 	void *ptr;
