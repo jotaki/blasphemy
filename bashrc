@@ -115,7 +115,7 @@ alias ls='ls --color=auto'
 
 ##
 # Useful on new systems.
-alias installrvm='curl -L get.rvm.io | bash -s stable'
+alias installrvm='curl -k -L get.rvm.io | bash -s stable'
 
 ##
 # Nuke history
