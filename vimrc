@@ -29,4 +29,4 @@ iab #include<stdio> #include <stdio.h><CR>#include <stdlib.h><CR>#include <strin
 iab #include<socket> #include <sys/socket.h><CR>#include <sys/types.h><CR>#include <sys/select.h><CR>#include <netinet/in.h><CR>#include <arpa/inet.h><CR>#include <netdb.h>
 
 " normal main
-iab intmain int main(int argc, char *argv[])<CR>{<CR><Tab>
+iab intmain int main(int argc, char *argv[])<CR>{
