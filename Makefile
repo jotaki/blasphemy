@@ -6,9 +6,25 @@ all:
 	@echo "      make [home|pcalc|root]"
 
 home:
-	ln -sf $(PWD)/bashrc $(HOME)/.bashrc
-	ln -sf $(PWD)/vimrc $(HOME)/.vimrc
-	mkdir -p $(HOME)/bin $(HOME)/.profile.d/
+	@echo "Creating Symbolic Links"
+	@echo "    -> bashrc"
+	@ln -sf    $(PWD)/bashrc $(HOME)/.bashrc
+	@echo "    -> vimrc"
+	@ln -sf    $(PWD)/vimrc $(HOME)/.vimrc
+	@echo "    -> xinitrc"
+	@ln -sf    $(PWD)/xinitrc $(HOME)/.xinitrc
+	@echo "    -> fluxbox"
+	@ln -sf    $(PWD)/fluxbox $(HOME)/.fluxbox
+	@echo
+	@echo "Creating Directories"
+	@echo "    -> Local binary directory"
+	@mkdir -p  $(HOME)/bin
+	@echo "    -> Local bash include directory"
+	@mkdir -p  $(HOME)/.profile.d
+	@echo "    -> Local source directory"
+	@mkdir -p  $(HOME)/src
+	@echo "    -> Local downloads directory"
+	@mkdir -p  $(HOME)/dwnlds
 
 pcalc:
 	@[ -x "$(FLEX)" ] || (echo "Flex not installed"; exit 1)
