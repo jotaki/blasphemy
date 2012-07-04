@@ -22,7 +22,7 @@ home:
 	@echo "    -> xsession"
 	@ln -sf    $(PWD)/xinitrc $(HOME)/.xsession
 	@echo "    -> fluxbox"
-	@rm -f     $(HOME)/.fluxbox
+	@rm -rf    $(HOME)/.fluxbox
 	@ln -sf    $(PWD)/fluxbox $(HOME)/.fluxbox
 	@echo
 	@echo "Creating Directories"
