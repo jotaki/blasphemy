@@ -3,7 +3,13 @@ SUDO= /usr/bin/sudo
 
 all:
 	@echo "Usage:"
-	@echo "      make [home|pcalc|root]"
+	@echo "      make [home|pcalc|xidle|root|common-bin|fresh]"
+
+fresh: home pcalc xidle common-bin
+	@echo
+	@echo
+	@echo "Fresh install complete :-)"
+	@echo
 
 home:
 	@echo "Creating Symbolic Links"
@@ -13,6 +19,8 @@ home:
 	@ln -sf    $(PWD)/vimrc $(HOME)/.vimrc
 	@echo "    -> xinitrc"
 	@ln -sf    $(PWD)/xinitrc $(HOME)/.xinitrc
+	@echo "    -> xsession"
+	@ln -sf    $(PWD)/xinitrc $(HOME)/.xsession
 	@echo "    -> fluxbox"
 	@ln -sf    $(PWD)/fluxbox $(HOME)/.fluxbox
 	@echo
@@ -29,6 +37,16 @@ home:
 pcalc:
 	@[ -x "$(FLEX)" ] || (echo "Flex not installed"; exit 1)
 	make -C src/pcalc-2 all local-install distclean
+
+xidle:
+	make -C src/xidle all local-install clean
+
+common-bin:
+	@echo "Creating symlinks to common scripts"
+	@echo "    ->  random background script (setrbkground)"
+	@ln -sf    $(PWD)/bin/setrbkground $(HOME)/bin/setrbkground
+	@echo "    ->  change background script (setbkground)"
+	@ln -sf    $(PWD)/bin/setbkground $(HOME)/bin/setbkground
 
 root:
 	@$(SUDO) -k

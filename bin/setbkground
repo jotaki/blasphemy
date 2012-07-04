@@ -1,0 +1,7 @@
+#! /bin/bash
+
+dest=${2:-$HOME/media/background}
+source=${1?$0 <background>}
+source=$(readlink -f "$source")
+ln -sf "$source" "$dest"
+/usr/bin/Esetroot -scale "$dest"

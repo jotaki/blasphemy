@@ -92,6 +92,9 @@ Mod1 Control f :Minimize
 Mod1 Shift f :Fullscreen
 Mod1 f :Maximize
 
+# change wallpaper
+Mod1 F2 :Exec $HOME/bin/setbkground
+
 # reload config
 Mod1 F6 :Reconfig
 

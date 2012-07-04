@@ -6,6 +6,14 @@
 
 # Change your keymap:
 xmodmap "/home/jotaki/.Xmodmap"
+synclient TapButton1=1
+sudo NetworkManager
+sudo nm-applet &
+gkrellm -w &
+volti &
+$HOME/bin/xidle -timeout 420 -program /usr/bin/xlock &
+$HOME/bin/setbkground
+xcompmgr &
 
 # Applications you want to run with fluxbox.
 # MAKE SURE THAT APPS THAT KEEP RUNNING HAVE AN ''&'' AT THE END.
