@@ -22,6 +22,7 @@ home:
 	@echo "    -> xsession"
 	@ln -sf    $(PWD)/xinitrc $(HOME)/.xsession
 	@echo "    -> fluxbox"
+	@rm -f     $(HOME)/.fluxbox
 	@ln -sf    $(PWD)/fluxbox $(HOME)/.fluxbox
 	@echo
 	@echo "Creating Directories"
@@ -33,13 +34,17 @@ home:
 	@mkdir -p  $(HOME)/src
 	@echo "    -> Local downloads directory"
 	@mkdir -p  $(HOME)/dwnlds
+	@echo "    -> Local media directories"
+	@mkdir -p  $(HOME)/media/{local,remote}
+	@echo "    -> Local media subdirectories"
+	@mkdir -p  $(HOME)/media/local/{documents,vms,wallpaper,music,video}
 
 pcalc:
 	@[ -x "$(FLEX)" ] || (echo "Flex not installed"; exit 1)
-	make -C src/pcalc-2 all local-install distclean
+	@make -C src/pcalc-2 all local-install distclean
 
 xidle:
-	make -C src/xidle all local-install clean
+	@make -C src/xidle all local-install clean
 
 common-bin:
 	@echo "Creating symlinks to common scripts"
