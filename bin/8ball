@@ -1,0 +1,51 @@
+#! /bin/bash
+#
+# Simple magic 8-ball script.
+# Why? because I couldn't find one in eix.
+# Enjoy :-)
+###
+
+trap exit INT TERM
+
+terminal_supports_color() {
+    [[ -x /usr/bin/tput ]] && tput setaf 1 &>/dev/null;
+    return $? # I know it's not needed, just more clear this way.
+}
+
+END=;YES=;NO=;MAYBE=;
+if terminal_supports_color; then
+    END="\033[0m"
+    YES="\033[0;32m"
+    NO="\033[0;31m"
+    MAYBE="\033[0;33m"
+fi
+
+answers=(\
+    "${YES}It is certain${END}" \
+    "${YES}It is decidely so${END}" \
+    "${YES}Without a doubt${END}" \
+    "${YES}Yes -- definitely${END}" \
+    "${YES}You may rely on it${END}" \
+    "${YES}As I see it, yes${END}" \
+    "${YES}Most likely${END}" \
+    "${YES}Outlook good${END}" \
+    "${YES}Yes${END}" \
+    "${YES}Signs point to yes${END}" \
+    "${MAYBE}Reply hazy, try again${END}" \
+    "${MAYBE}Ask again later${END}" \
+    "${MAYBE}Better not tell you now${END}" \
+    "${MAYBE}Cannot predict now${END}" \
+    "${MAYBE}Concentrate and ask again${END}" \
+    "${NO}Don't count on it${END}" \
+    "${NO}My reply is no${END}" \
+    "${NO}My sources say no${END}" \
+    "${NO}Outlook not so good${END}" \
+    "${NO}Very doubtful${END}" \
+    )
+
+while [ true ]; do
+    read -p "Question> " question
+    [ "$question" = "" ] && exit
+
+    echo -e "${answers[RANDOM % ${#answers[@]}]}"
+done

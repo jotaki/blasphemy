@@ -12,7 +12,7 @@ sudo nm-applet &
 gkrellm -w &
 volti &
 $HOME/bin/xidle -timeout 420 -program /usr/bin/xlock &
-$HOME/bin/setbkground
+$HOME/bin/setrbkground
 xcompmgr &
 
 # Applications you want to run with fluxbox.

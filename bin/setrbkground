@@ -1,7 +1,8 @@
 #! /bin/bash
 
+HOME=${HOME:-/home/jotaki}
+
 files=($HOME/media/local/wallpaper/*)
 bgpath="${files[RANDOM % ${#files[@]}]}"
 
-echo "$bgpath"
 $HOME/bin/setbkground "$bgpath"

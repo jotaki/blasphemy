@@ -52,6 +52,8 @@ common-bin:
 	@ln -sf    $(PWD)/bin/setrbkground $(HOME)/bin/setrbkground
 	@echo "    ->  change background script (setbkground)"
 	@ln -sf    $(PWD)/bin/setbkground $(HOME)/bin/setbkground
+	@echo "    ->  magic 8-ball script."
+	@ln -sf    $(PWD)/bin/8ball $(HOME)/bin/8ball
 
 root:
 	@$(SUDO) -k
