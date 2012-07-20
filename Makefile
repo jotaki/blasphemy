@@ -54,6 +54,8 @@ common-bin:
 	@ln -sf    $(PWD)/bin/setbkground $(HOME)/bin/setbkground
 	@echo "    ->  magic 8-ball script."
 	@ln -sf    $(PWD)/bin/8ball $(HOME)/bin/8ball
+	@echo "    ->  google-chrome proxy wrapper"
+	@ln -sf    $(PWD)/bin/chrome-proxy $(HOME)/bin/chrome-proxy
 
 root:
 	@$(SUDO) -k

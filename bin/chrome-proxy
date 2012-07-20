@@ -1,0 +1,48 @@
+#! /bin/bash
+
+SSH_HOST="$1"
+PROXY_HOST=${PROXY_HOST:-localhost:8080}
+CHROME=${CHROME:-$(which google-chrome)}
+
+if [ -z "$CHROME" ]; then
+    echo "Could not find google-chrome"
+    exit 1
+fi
+
+if [ -z "$SSH_HOST" ]; then
+    cat <<EOF
+Usage:
+    $0 <ssh host> [opts]
+
+    <ssh host>    -    The host to use.
+    [opts]        -    Passed off as options to google-chrome.
+
+Optional Environment Variables:
+    PROXY_HOST    -    parameter to ssh -D.
+    CHROME        -    path to google chrome.
+    NO_TUNNEL     -    dont create tunnel.
+EOF
+
+    exit 1
+fi
+
+###
+# check suid bit on chrome-sandbox, if not set apply --no-sandbox
+no_sandbox() {
+    local mode=
+    mode=$(cd `dirname $(readlink -f "$CHROME")`; stat -c '%A' chrome-sandbox)
+    [ "${mode:3:1}" = "s" ] || echo -n "--no-sandbox"
+}
+    
+
+###
+# Create tunnel.
+test -n "$NO_TUNNEL" || ssh -f -D${PROXY_HOST} ${SSH_HOST} sleep 1
+
+###
+# Remove <ssh host>
+shift
+
+###
+# Start chrome
+$CHROME $(no_sandbox) --proxy-server=socks://${PROXY_HOST} $*
