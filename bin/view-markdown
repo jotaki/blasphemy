@@ -1,0 +1,18 @@
+#! /bin/bash
+
+input=${1:?<file.md> [tmp file]}
+tmpfile=${2:-$(mktemp -p. ${input}.XXXXXX.html)}
+
+cat <<EOF > "$tmpfile"
+<html><head><title>$input</title></head><body>
+EOF
+
+markdown $input >> "$tmpfile"
+
+cat <<EOF >> "$tmpfile"
+</body></html>
+EOF
+
+${browser:-elinks} "$tmpfile"
+
+rm -f "$tmpfile"

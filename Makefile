@@ -56,6 +56,8 @@ common-bin:
 	@ln -sf    $(PWD)/bin/8ball $(HOME)/bin/8ball
 	@echo "    ->  google-chrome proxy wrapper"
 	@ln -sf    $(PWD)/bin/chrome-proxy $(HOME)/bin/chrome-proxy
+	@echo "    ->  markdown viewer"
+	@ln -sf    $(PWD)/bin/view-markdown $(HOME)/bin/viewmd
 
 root:
 	@$(SUDO) -k

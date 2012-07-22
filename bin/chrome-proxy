@@ -27,6 +27,14 @@ EOF
 fi
 
 ###
+# ensure chrome is dead. TODO: improve: add logic.
+ensure_chrome_dead(){ killall chrome; }
+
+###
+# Trap SIG INT/HUP/TERM.
+trap ensure_chrome_dead INT HUP TERM
+
+###
 # check suid bit on chrome-sandbox, if not set apply --no-sandbox
 no_sandbox() {
     local mode=
@@ -34,7 +42,6 @@ no_sandbox() {
     [ "${mode:3:1}" = "s" ] || echo -n "--no-sandbox"
 }
     
-
 ###
 # Create tunnel.
 test -n "$NO_TUNNEL" || ssh -f -D${PROXY_HOST} ${SSH_HOST} sleep 1
@@ -46,3 +53,7 @@ shift
 ###
 # Start chrome
 $CHROME $(no_sandbox) --proxy-server=socks://${PROXY_HOST} $*
+
+###
+# Ensure chrome died.
+ensure_chrome_dead
