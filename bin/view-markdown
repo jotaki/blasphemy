@@ -7,7 +7,7 @@ cat <<EOF > "$tmpfile"
 <html><head><title>$input</title></head><body>
 EOF
 
-markdown $input >> "$tmpfile"
+${markdown:-redcarpet} $input >> "$tmpfile"
 
 cat <<EOF >> "$tmpfile"
 </body></html>
