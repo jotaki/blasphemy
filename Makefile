@@ -58,6 +58,8 @@ common-bin:
 	@ln -sf    $(PWD)/bin/chrome-proxy $(HOME)/bin/chrome-proxy
 	@echo "    ->  markdown viewer"
 	@ln -sf    $(PWD)/bin/view-markdown $(HOME)/bin/viewmd
+	@echo "    ->  build local rpms wrapper"
+	@ln -sf    $(PWD)/bin/make_rpm $(HOME)/bin/make_rpm
 
 root:
 	@$(SUDO) -k

@@ -1,0 +1,44 @@
+#! /bin/bash
+
+make_rpm() {
+    local build_type=${1:0:1}
+    local specfile="${2:-}"
+    local specdir="$(readlink -f "$(dirname "$specfile")")"
+    local -i retval=0
+    local output= rpmfile=
+
+    if [[ -z "$build_type" || $build_type != [abs] ]]; then
+        echo "Invalid build type: '$2' ($build_type)"
+        return 1
+    fi
+
+    if [[ -z "$specfile" || ! -f "$specfile" ]]; then
+        echo "Could not use specfile '$specfile'"
+        return 1
+    fi
+
+    pushd $specdir
+    mkdir -p .TOP/{BUILD,RPMS,SRPMS}
+
+    make clean tar && output=$(rpmbuild \
+        --define "_topdir ${PWD}/.TOP" \
+        --define "_sourcedir ${PWD}" \
+        --define "_specdir ${PWD}" \
+        -b$build_type "$(basename "$specfile")" |
+        tee /dev/stderr)
+    retval=$?
+    make clean
+    popd
+
+    if [[ $retval == 0 ]]; then
+        output=$(echo -e "$output" | grep -i "^wrote: $specdir" | cut -f2- -d' ')
+        for rpmfile in $output; do
+            mv -iv "$rpmfile" $specdir/
+        done
+    fi
+
+    rm -rf $specdir/.TOP
+    return $retval
+}
+
+make_rpm $@
