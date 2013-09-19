@@ -72,7 +72,7 @@ char *rot47(char *buffer)
 	char *p = buffer;
 
 	while(*p) {
-		if(*p > 32) *p = rotate(*p, 32, 47, 94);
+		if(*p > 32) *p = rotate(*p, 33, 47, 94);
 		++p;
 	}
 
@@ -125,5 +125,3 @@ int rotty_main(int argc, char *argv[])
 
 	return 0;
 }
-
-
