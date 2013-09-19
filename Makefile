@@ -3,9 +3,20 @@ SUDO= /usr/bin/sudo
 
 all:
 	@echo "Usage:"
-	@echo "      make [home|pcalc|xidle|root|common-bin|fresh]"
+	@echo "      make [option]"
+	@echo
+	@echo "Where [option] is:"
+	@echo "    home        -  build home root"
+	@echo "    pcalc       -  build pcalc"
+	@echo "    xidle       -  build xidle"
+	@echo "    root        -  install for root user"
+	@echo "    rotty       -  build rot13/rot47"
+	@echo "    xor         -  build simple xor program"
+	@echo "    prime       -  build prime checker"
+	@echo "    common-bin  -  symlink common binaries"
+	@echo "    fresh       -  All of the above. (Except root)"
 
-fresh: home pcalc xidle common-bin
+fresh: home pcalc xidle common-bin rotty xor prime
 	@echo
 	@echo
 	@echo "Fresh install complete :-)"
@@ -43,8 +54,17 @@ pcalc:
 	@[ -x "$(FLEX)" ] || (echo "Flex not installed"; exit 1)
 	@make -C src/pcalc-2 all local-install distclean
 
+prime:
+	@make -C src/prime all local-install clean
+
 xidle:
 	@make -C src/xidle all local-install clean
+
+rotty:
+	@make -C src/rotty all local-install clean
+
+xor:
+	@make -C src/xor all local-install clean
 
 common-bin:
 	@echo "Creating symlinks to common scripts"
