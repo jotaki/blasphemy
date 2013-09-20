@@ -1,0 +1,3 @@
+[submodule "src/checklist"]
+	path = src/checklist
+	url = https://github.com/jotaki/checklist.git
