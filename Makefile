@@ -12,11 +12,12 @@ all:
 	@echo "    root        -  install for root user"
 	@echo "    rotty       -  build rot13/rot47"
 	@echo "    xor         -  build simple xor program"
+	@echo "    checklist   -  build simple checklist program"
 	@echo "    prime       -  build prime checker"
 	@echo "    common-bin  -  symlink common binaries"
 	@echo "    fresh       -  All of the above. (Except root)"
 
-fresh: home pcalc xidle common-bin rotty xor prime
+fresh: home pcalc xidle common-bin rotty xor prime checklist
 	@echo
 	@echo
 	@echo "Fresh install complete :-)"
@@ -65,6 +66,11 @@ rotty:
 
 xor:
 	@make -C src/xor all local-install clean
+
+checklist:
+	@make -C src/checklist all
+	install -m 0755 src/checklist/checklist $(HOME)/bin/checklist
+	@make -C src/checklist clean
 
 common-bin:
 	@echo "Creating symlinks to common scripts"
