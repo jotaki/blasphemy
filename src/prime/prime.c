@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 {
 	int i;
 	size_t size, j;
-	uint64_t * f, n;
+	int64_t * f, n;
 
 	if(argc < 2) {
 		printf("Usage: %s <number> [number...]\n", argv[0]);

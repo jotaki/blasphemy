@@ -1,7 +1,7 @@
 all: prime
 
 prime: prime.c
-	gcc -o prime prime.c -W -Wall -s -O2 -lm -Wno-pointer-sign
+	gcc -o prime prime.c -W -Wall -s -O2 -lm
 
 local-install: prime
 	mkdir -p $(HOME)/bin
