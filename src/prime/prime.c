@@ -12,7 +12,7 @@ int64_t * common_factors(int64_t n, size_t * size)
 		return NULL;
 	
 	*size = 0;
-	max = sqrtl(n) + 1;
+	max = sqrtl(n) + (n == 2? 0: 1);
 	for(i = 1; i <= max; ++i) {
 		if((n % i) == 0) {
 			*size += 2;
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 			continue;
 
 		printf("%" PRIu64 " is %sprime, with factors = { ",
-				n, size == 2? "": "not ");
+				n, size == 2 && n != 1? "": "not ");
 
 		for(j = 0; j  < size; j+=2)
 			printf("%" PRIu64 "*%" PRIu64 ", ", f[j], f[j+1]);
