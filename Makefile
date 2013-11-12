@@ -17,8 +17,10 @@ all:
 	@echo "    common-bin  -  symlink common binaries"
 	@echo "    fresh       -  All of the above. (Except root)"
 	@echo "    iplookup    -  build iplookup"
+	@echo "    rgb-display -  Display 6-digit hex color code"
 
-fresh: home pcalc xidle common-bin rotty xor prime checklist iplookup
+fresh: home pcalc xidle common-bin rotty xor prime checklist iplookup \
+	rgb-display
 	@echo
 	@echo
 	@echo "Fresh install complete :-)"
@@ -70,6 +72,9 @@ xor:
 
 iplookup:
 	@make -C src/iplookup all local-install clean
+
+rgb-display:
+	@make -C src/rgb-display all local-install clean
 
 checklist:
 	@make -C src/checklist all
