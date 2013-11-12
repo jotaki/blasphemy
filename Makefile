@@ -16,8 +16,9 @@ all:
 	@echo "    prime       -  build prime checker"
 	@echo "    common-bin  -  symlink common binaries"
 	@echo "    fresh       -  All of the above. (Except root)"
+	@echo "    iplookup    -  build iplookup"
 
-fresh: home pcalc xidle common-bin rotty xor prime checklist
+fresh: home pcalc xidle common-bin rotty xor prime checklist iplookup
 	@echo
 	@echo
 	@echo "Fresh install complete :-)"
@@ -66,6 +67,9 @@ rotty:
 
 xor:
 	@make -C src/xor all local-install clean
+
+iplookup:
+	@make -C src/iplookup all local-install clean
 
 checklist:
 	@make -C src/checklist all
