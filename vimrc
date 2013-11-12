@@ -6,6 +6,9 @@ au FileType cucumber setl sw=2 ts=2 sts=2 expandtab nowrap
 au FileType html,eruby,javascript setl ts=2 sw=2 tw=120 expandtab nowrap
 au FileType sh,spec setl ts=4 sw=4 tw=120 expandtab wrap cindent
 
+" ugly, but needed for JRobo development. :(
+au FileType java setl sw=2 ts=2 sts=2 expandtab nowrap cindent
+
 set pastetoggle=<F2>
 set wmh=0
 set hidden
