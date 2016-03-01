@@ -1,0 +1,23 @@
+#! /bin/bash
+
+# Requires nc
+
+if [ "$1" = "" ]; then
+    echo "Usage: $0 <file> [port]"
+    exit 1
+fi
+
+tmp=$(mktemp)
+
+echo <<EOF > $tmp
+HTTP/1.1 200 OK
+Date: $(date -u)
+Content-Length: $(stat -c %s $1)
+Connection: close
+Content-Type: text/plain
+
+EOF
+
+cat $1 >> $tmp
+nc -q 1 -l -p ${2:-8080} < $tmp
+rm -f $tmp
